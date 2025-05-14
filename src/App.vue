@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>📚 我的代码片段 + 面试题工具</h1>
-    <button @click="addSnippet">添加代码片段</button>
+    <button @click="addSnippet">添加x代码片段</button>
     <ul>
       <li v-for="(item, index) in snippets" :key="index">{{ item }}</li>
     </ul>
