@@ -3,7 +3,8 @@ import messages from './locales'
 
 export const i18n = createI18n({
   legacy: false,
+  globalInjection: true,
   locale: 'zh',
-  messages,
-  globalInjection: true
+  fallbackLocale: 'en',
+  messages
 })

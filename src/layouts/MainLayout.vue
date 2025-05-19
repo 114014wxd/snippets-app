@@ -49,7 +49,7 @@ import Sidebar from '@/components/Sidebar.vue'
 import { computed, watch, ref, onMounted } from 'vue'
 
 const app = useAppStore()
-const { t, locale } = useI18n()
+const { t, locale } = useI18n({ useScope: 'global' })
 
 
 // 响应式判断窗口宽度是否为移动端
