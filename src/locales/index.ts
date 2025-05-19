@@ -1,16 +1,20 @@
-import common from './modules/common'
-import sidebar from './modules/sidebar'
-import snippet from './modules/snippet'
-
 export default {
   zh: {
-    common: common.zh,
-    sidebar: sidebar.zh,
-    snippet: snippet.zh,
+    sidebar: {
+      all: '全部片段',
+      react: 'React',
+      array: '数组',
+      interview: '面试',
+      settings: '设置'
+    }
   },
   en: {
-    common: common.en,
-    sidebar: sidebar.en,
-    snippet: snippet.en,
+    sidebar: {
+      all: 'All Snippets',
+      react: 'React',
+      array: 'Array',
+      interview: 'Interview Questions',
+      settings: 'Settings'
+    }
   }
 }
