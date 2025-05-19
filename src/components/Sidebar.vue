@@ -4,6 +4,8 @@
             text-color="var(--el-text-color-primary)" active-text-color="var(--el-color-primary)" router>
             <el-menu-item index="/home">
                 <span class="icon">🧩</span>
+                <div>{{ t('all') }}</div>
+                <div>{{ $t('all') }}</div>
                 <template #title>{{ $t('sidebar.all') }}</template>
             </el-menu-item>
 
@@ -34,8 +36,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-// import { useI18n } from 'vue-i18n'
-// const { t } = useI18n()
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const route = useRoute()
 const activeMenu = ref(route.path)
 
