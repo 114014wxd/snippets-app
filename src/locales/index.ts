@@ -1,4 +1,5 @@
-import { zh, en } from './modules/sidebar'
+import zh from './modules/sidebar'
+import en from './modules/sidebar'
 
 export default {
   zh: {
