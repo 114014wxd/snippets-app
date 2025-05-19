@@ -30,11 +30,6 @@
                 <template #title>{{ $t('sidebar.settings') }}</template>
             </el-menu-item>
         </el-menu>
-        <div>
-            t('sidebar.all') = {{ t('sidebar.all') }}
-            <br />
-            messages.zh.sidebar.all = {{ messages.zh?.sidebar?.all }}
-        </div>
     </div>
 </template>
 
@@ -42,7 +37,7 @@
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-const { t, locale, messages }:any = useI18n()
+const { t, locale, messages }:any = useI18n({ useScope: 'global' })
 const route = useRoute()
 const activeMenu = ref(route.path)
 console.log('当前语言：', locale.value)
