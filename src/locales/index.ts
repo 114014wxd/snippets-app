@@ -4,13 +4,13 @@ import snippet from './modules/snippet'
 
 export default {
   zh: {
-    ...common.zh,
-    ...sidebar.zh,
-    ...snippet.zh
+    common: common.zh,
+    sidebar: sidebar.zh,
+    snippet: snippet.zh,
   },
   en: {
-    ...common.en,
-    ...sidebar.en,
-    ...snippet.en
+    common: common.en,
+    sidebar: sidebar.en,
+    snippet: snippet.en,
   }
 }
