@@ -35,7 +35,7 @@ app.use(pinia)
 // 🔥 useAppStore 要在 pinia.use() 之后
 const appStore = useAppStore()
 i18n.global.locale.value = appStore.locale
-
+console.log('当前语言：', i18n.global.locale.value)
 app.use(router)
 app.use(ElementPlus)
 app.use(i18n)

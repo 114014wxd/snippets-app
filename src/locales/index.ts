@@ -1,16 +1,11 @@
-import common from './modules/common'
-import sidebar from './modules/sidebar'
-import snippet from './modules/snippet'
+import * as zhSidebar from './modules/sidebar'
+import * as enSidebar from './modules/sidebar'
 
 export default {
   zh: {
-    common: common.zh,
-    sidebar: sidebar.zh,
-    snippet: snippet.zh,
+    sidebar: zhSidebar.zh,
   },
   en: {
-    common: common.en,
-    sidebar: sidebar.en,
-    snippet: snippet.en,
+    sidebar: enSidebar.en,
   }
 }

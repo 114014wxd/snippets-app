@@ -5,7 +5,8 @@
             <el-menu-item index="/home">
                 <span class="icon">🧩</span>
                 <div>{{ t('all') }}</div>
-                <div>{{ $t('all') }}</div>
+                <div>{{ $t('sidebar.all') }}</div>
+                <div>{{ t('sidebar.all') }}</div>
                 <template #title>{{ $t('sidebar.all') }}</template>
             </el-menu-item>
 
@@ -34,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch,onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
@@ -45,7 +46,9 @@ const activeMenu = ref(route.path)
 watch(() => route.path, (newPath) => {
     activeMenu.value = newPath
 })
-
+onMounted(() => {
+  console.log('sidebar.all 的翻译：', t('sidebar.all'))
+})
 </script>
 
 <style scoped>
