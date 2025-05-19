@@ -30,11 +30,13 @@ const app = createApp(App)
 const pinia = createPinia()
 
 pinia.use(piniaPluginPersistedstate)
-app.use(ElementPlus)
-app.use(router) // ✅ 挂载
-app.use(i18n)
 app.use(pinia)
-// ✅ 手动同步 locale 设置到 i18n
+
+// 🔥 useAppStore 要在 pinia.use() 之后
 const appStore = useAppStore()
 i18n.global.locale.value = appStore.locale
+
+app.use(router)
+app.use(ElementPlus)
+app.use(i18n)
 app.mount('#app')
