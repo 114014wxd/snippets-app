@@ -16,11 +16,16 @@ import { useAppStore } from '@/stores/app'
 // 创建 i18n 实例
 const i18n = createI18n({
   legacy: false,
-  locale: 'zh', // 默认语言
+  globalInjection: true,
+  locale: 'zh',
   fallbackLocale: 'en',
   messages,
 })
 
+console.log(i18n.global.messages)
+console.log('🌍 i18n messages:', messages)
+console.log('🌍 i18n:', i18n)
+console.log(i18n.global.t('sidebar.all'))
 const app = createApp(App)
 const pinia = createPinia()
 
