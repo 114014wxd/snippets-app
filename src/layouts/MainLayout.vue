@@ -147,9 +147,8 @@ const themeLabel = computed(() =>
 }
 
 html:not(.dark) .layout-aside {
-    background: linear-gradient(180deg, #e9f4f8 0%, #f2f6fb 100%);
+   background: linear-gradient(to right, #E3FBFE 0%, #f2f6fb 100%);
 }
-
 .layout-main {
     padding: 20px;
     overflow-y: auto;
