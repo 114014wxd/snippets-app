@@ -1,16 +1,13 @@
-import common from './modules/common'
-import sidebar from './modules/sidebar'
-import snippet from './modules/snippet'
+const modules = import.meta.glob('./modules/*.ts', { eager: true }) as Record<string, any>
 
-export default {
-  zh: {
-    common: common.zh,
-    sidebar: sidebar.zh,
-    snippet: snippet.zh,
-  },
-  en: {
-    common: common.en,
-    sidebar: sidebar.en,
-    snippet: snippet.en,
+const langMap: Record<string, any> = { zh: {}, en: {} }
+
+Object.entries(modules).forEach(([path, mod]) => {
+  const fileName = path.match(/\.\/modules\/(.*)\.ts$/)?.[1]
+  if (fileName) {
+    langMap.zh[fileName] = mod.default.zh
+    langMap.en[fileName] = mod.default.en
   }
-}
+})
+
+export default langMap
