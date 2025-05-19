@@ -3,15 +3,15 @@
     <CardItem
       v-for="card in snippetCategories"
       :key="card.key"
-      :title="$t(card.title)"
-      :subtitle="$t(card.subtitle)"
+      :title="t(card.title)"
+      :subtitle="t(card.subtitle)"
       :icon="card.icon"
       @click="goTo(card.path)"
     />
     <CardItem
       icon="➕"
-      :title="$t('snippet.new')"
-      :subtitle="$t('snippet.createNew')"
+      :title="t('snippet.new')"
+      :subtitle="t('snippet.createNew')"
       @click="goTo('/settings')"
     />
   </div>
@@ -21,6 +21,8 @@
 import { useRouter } from 'vue-router'
 import CardItem from './CardItem.vue'
 
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const router = useRouter()
 
 const snippetCategories = [

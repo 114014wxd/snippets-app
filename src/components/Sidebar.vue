@@ -4,27 +4,27 @@
             text-color="var(--el-text-color-primary)" active-text-color="var(--el-color-primary)" router>
             <el-menu-item index="/home">
                 <span class="icon">🧩</span>
-                <template #title>{{ $t('sidebar.all') }}</template>
+                <template #title>{{ t('sidebar.all') }}</template>
             </el-menu-item>
 
             <el-menu-item index="/react">
                 <span class="icon">⚛️</span>
-                <template #title>{{ $t('sidebar.react') }}</template>
+                <template #title>{{ t('sidebar.react') }}</template>
             </el-menu-item>
 
             <el-menu-item index="/array">
                 <span class="icon">🧮</span>
-                <template #title>{{ $t('sidebar.array') }}</template>
+                <template #title>{{ t('sidebar.array') }}</template>
             </el-menu-item>
 
             <el-menu-item index="/interview">
                 <span class="icon">📄</span>
-                <template #title>{{ $t('sidebar.interview') }}</template>
+                <template #title>{{ t('sidebar.interview') }}</template>
             </el-menu-item>
 
             <el-menu-item index="/settings">
                 <span class="icon">⚙️</span>
-                <template #title>{{ $t('sidebar.settings') }}</template>
+                <template #title>{{ t('sidebar.settings') }}</template>
             </el-menu-item>
         </el-menu>
 
@@ -34,8 +34,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-
-
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const route = useRoute()
 const activeMenu = ref(route.path)
 

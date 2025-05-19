@@ -7,7 +7,7 @@
                     <!-- 手机端菜单按钮 -->
                     <el-button class="mobile-menu-button"  @click="drawerVisible = true" 
                         v-if="isMobile" >🍔</el-button>
-                    <span class="logo">🧠 {{ $t('common.logo') }}</span>
+                    <span class="logo">🧠 {{ t('common.logo') }}</span>
                 </div>
                 <div class="header-right">
                     <!-- 语言切换按钮 -->
@@ -51,6 +51,7 @@ import { computed, watch, ref, onMounted } from 'vue'
 
 const app = useAppStore()
 const { t, locale } = useI18n()
+
 
 // 响应式判断窗口宽度是否为移动端
 const drawerVisible = ref(false)
