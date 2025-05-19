@@ -1,5 +1,5 @@
 html.dark {
-  --el-bg-color: #090D16; /* 更温和的深灰色 */
+  --el-bg-color: #090d16; /* 更温和的深灰色 */
   --el-bg-color-overlay: #252629;
   --el-text-color-primary: #e0e0e0;
   --el-border-color: #3a3a3a;
@@ -15,6 +15,6 @@ html.dark {
   z-index: 9999;
   transition: transform 0.5s ease, opacity 0.3s ease;
 }
- * {
+* {
   margin: 0;
- }
+}
