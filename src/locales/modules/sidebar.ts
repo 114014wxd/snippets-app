@@ -1,4 +1,5 @@
-export const zh = {
+// src/locales/modules/sidebar.ts
+const zh = {
   all: '全部片段',
   react: 'React 相关',
   array: '数组操作',
@@ -6,10 +7,12 @@ export const zh = {
   settings: '设置'
 }
 
-export const en = {
+const en = {
   all: 'All Snippets',
   react: 'React',
   array: 'Array Manipulation',
   interview: 'Interview Questions',
   settings: 'Settings'
 }
+
+export default { zh, en }

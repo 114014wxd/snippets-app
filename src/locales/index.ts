@@ -1,11 +1,10 @@
-import * as zhSidebar from './modules/sidebar'
-import * as enSidebar from './modules/sidebar'
+import { zh, en } from './modules/sidebar'
 
 export default {
   zh: {
-    sidebar: zhSidebar.zh,
+    sidebar: zh
   },
   en: {
-    sidebar: enSidebar.en,
+    sidebar: en
   }
 }
