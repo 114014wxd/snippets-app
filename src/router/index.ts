@@ -31,7 +31,7 @@ const routes = [
     component: InterviewView
   },
   {
-    path: '/new',
+    path: '/settings',
     name: 'NewSnippet',
     component: NewSnippet
   }

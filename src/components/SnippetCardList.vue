@@ -12,7 +12,7 @@
       icon="➕"
       :title="$t('snippet.new')"
       :subtitle="$t('snippet.createNew')"
-      @click="goTo('/new')"
+      @click="goTo('/settings')"
     />
   </div>
 </template>

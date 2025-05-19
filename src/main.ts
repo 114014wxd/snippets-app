@@ -20,7 +20,7 @@ const i18n = createI18n({
   fallbackLocale: 'en',
   messages,
 })
-
+console.log(i18n.global.messages)
 const app = createApp(App)
 const pinia = createPinia()
 
