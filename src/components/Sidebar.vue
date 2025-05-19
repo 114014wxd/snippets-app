@@ -4,10 +4,10 @@
             text-color="var(--el-text-color-primary)" active-text-color="var(--el-color-primary)" router>
             <el-menu-item index="/home">
                 <span class="icon">🧩</span>
-                <div>{{ t('all') }}</div>
+                <!-- <div>{{ t('all') }}</div>
                 <div>{{ $t('sidebar.all') }}</div>
-                <div>{{ t('sidebar.all') }}</div>
-                <template #title>{{ $t('sidebar.all') }}</template>
+                <div>{{ t('sidebar.all') }}</div> -->
+                <template #title>{{ t('sidebar.all') }}</template>
             </el-menu-item>
 
             <el-menu-item index="/react">
