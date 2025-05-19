@@ -5,8 +5,7 @@
             <el-header height="60px" class="layout-header">
                 <div class="header-left">
                     <!-- 手机端菜单按钮 -->
-                    <el-button class="mobile-menu-button"  @click="drawerVisible = true" 
-                        v-if="isMobile" >🍔</el-button>
+                    <el-button class="mobile-menu-button" @click="drawerVisible = true" v-if="isMobile">🍔</el-button>
                     <span class="logo">🧠 {{ t('common.logo') }}</span>
                 </div>
                 <div class="header-right">
@@ -73,32 +72,32 @@ const toggleLocale = () => {
 }
 
 const toggleTheme = (e?: MouseEvent) => {
-  const isDark = !app.darkMode
-  const color = isDark ? '#000' : '#fff'
+    const isDark = !app.darkMode
+    const color = isDark ? '#000' : '#fff'
 
-  const ripple = document.createElement('div')
-  ripple.className = 'theme-ripple-mask'
-  ripple.style.setProperty('--ripple-color', color)
+    const ripple = document.createElement('div')
+    ripple.className = 'theme-ripple-mask'
+    ripple.style.setProperty('--ripple-color', color)
 
-  const x = (e?.clientX ?? window.innerWidth / 2) - 150
-  const y = (e?.clientY ?? window.innerHeight / 2) - 150
-  ripple.style.left = `${x}px`
-  ripple.style.top = `${y}px`
-  ripple.style.width = ripple.style.height = '300px'
+    const x = (e?.clientX ?? window.innerWidth / 2) - 150
+    const y = (e?.clientY ?? window.innerHeight / 2) - 150
+    ripple.style.left = `${x}px`
+    ripple.style.top = `${y}px`
+    ripple.style.width = ripple.style.height = '300px'
 
-  document.body.appendChild(ripple)
+    document.body.appendChild(ripple)
 
-  // 强制重绘 + 开始动画
-  requestAnimationFrame(() => {
-    ripple.style.transform = 'scale(4)'
-    ripple.style.opacity = '0'
-  })
+    // 强制重绘 + 开始动画
+    requestAnimationFrame(() => {
+        ripple.style.transform = 'scale(4)'
+        ripple.style.opacity = '0'
+    })
 
-  setTimeout(() => {
-    ripple.remove()
-  }, 500)
+    setTimeout(() => {
+        ripple.remove()
+    }, 500)
 
-  app.toggleTheme()
+    app.toggleTheme()
 }
 
 const localeLabel = computed(() =>
@@ -126,10 +125,12 @@ const themeLabel = computed(() =>
     border-radius: 5px;
     box-sizing: border-box;
 }
-.header-left{
+
+.header-left {
     display: flex;
     align-items: center;
 }
+
 .logo {
     font-weight: bold;
     font-size: 20px;
@@ -147,8 +148,9 @@ const themeLabel = computed(() =>
 }
 
 html:not(.dark) .layout-aside {
-   background: linear-gradient(to right, #E3FBFE 0%, #f2f6fb 100%);
+    background: linear-gradient(to right, #E3FBFE 0%, #f2f6fb 100%);
 }
+
 .layout-main {
     padding: 20px;
     overflow-y: auto;
@@ -162,8 +164,9 @@ html:not(.dark) .layout-aside {
     border: none;
     background: transparent;
 }
+
 :global(html.theme-transition),
 :global(html.theme-transition *) {
-  transition: background-color 0.3s ease, color 0.3s ease !important;
+    transition: background-color 0.3s ease, color 0.3s ease !important;
 }
 </style>

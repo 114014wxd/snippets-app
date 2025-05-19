@@ -35,19 +35,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch,onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const route = useRoute()
 const activeMenu = ref(route.path)
-
+console.log('语言：', locale.value)
+console.log('翻译 sidebar.all：', t('sidebar.all'))
 // 监听路由变化保持高亮
 watch(() => route.path, (newPath) => {
     activeMenu.value = newPath
 })
 onMounted(() => {
-  console.log('sidebar.all 的翻译：', t('sidebar.all'))
+    console.log('sidebar.all 的翻译：', t('sidebar.all'))
 })
 </script>
 
@@ -67,7 +68,7 @@ onMounted(() => {
 
 /* hover 效果（淡蓝或淡灰） */
 html.dark .sidebar-menu :deep(.el-menu-item:hover) {
- background: linear-gradient(135deg,
+    background: linear-gradient(135deg,
             rgba(64, 158, 255, 0.2),
             rgba(100, 108, 255, 0.25));
     /* 淡蓝色 */
@@ -110,7 +111,8 @@ html:not(.dark) .sidebar-menu :deep(.el-menu-item.is-active) {
 html:not(.dark) .sidebar-menu .icon {
     color: #8a94a6;
 }
+
 .sidebar-menu :deep(.el-menu-item.is-active .icon) {
-  color: inherit;
+    color: inherit;
 }
 </style>

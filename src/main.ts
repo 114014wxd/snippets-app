@@ -16,8 +16,9 @@ import { useAppStore } from '@/stores/app'
 // 创建 i18n 实例
 const i18n = createI18n({
   legacy: true,
-  locale: 'zh',
   globalInjection: true,
+  locale: 'zh',
+  fallbackLocale: 'en',
   messages
 })
 
