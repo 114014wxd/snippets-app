@@ -21,6 +21,8 @@ const i18n = createI18n({
   messages,
 })
 console.log(i18n.global.messages)
+console.log('🌍 i18n messages:', messages)
+console.log('🌍 i18n:', i18n)
 const app = createApp(App)
 const pinia = createPinia()
 
