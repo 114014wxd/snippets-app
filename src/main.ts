@@ -15,7 +15,7 @@ import messages from './locales' // 你将在下一步创建此文件
 import { useAppStore } from '@/stores/app'
 // 创建 i18n 实例
 const i18n = createI18n({
-  legacy: true,
+  legacy: false,
   globalInjection: true,
   locale: 'zh',
   fallbackLocale: 'en',

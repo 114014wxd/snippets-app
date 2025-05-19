@@ -30,7 +30,11 @@
                 <template #title>{{ $t('sidebar.settings') }}</template>
             </el-menu-item>
         </el-menu>
-
+        <div>
+            t('sidebar.all') = {{ t('sidebar.all') }}
+            <br />
+            messages.zh.sidebar.all = {{ messages.zh?.sidebar?.all }}
+        </div>
     </div>
 </template>
 
@@ -38,11 +42,12 @@
 import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-const { t, locale } = useI18n()
+const { t, locale, messages }:any = useI18n()
 const route = useRoute()
 const activeMenu = ref(route.path)
-console.log('语言：', locale.value)
-console.log('翻译 sidebar.all：', t('sidebar.all'))
+console.log('当前语言：', locale.value)
+console.log('messages.zh.sidebar.all：', messages.value.zh?.sidebar?.all)
+console.log('t("sidebar.all")：', t('sidebar.all'))
 // 监听路由变化保持高亮
 watch(() => route.path, (newPath) => {
     activeMenu.value = newPath
