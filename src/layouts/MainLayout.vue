@@ -10,14 +10,14 @@
                 </div>
                 <div class="header-right">
                     <!-- 语言切换按钮 -->
-                    <el-button size="small" @click="toggleLocale">
+                    <!-- <el-button size="small" @click="toggleLocale">
                         🌐 {{ localeLabel }}
-                    </el-button>
+                    </el-button> -->
 
                     <!-- 主题切换按钮 -->
-                    <el-button size="small" @click="(e: MouseEvent | undefined) => toggleTheme(e)">
+                    <!-- <el-button size="small" @click="toggleTheme()">
                         {{ themeLabel }}
-                    </el-button>
+                    </el-button> -->
                 </div>
             </el-header>
 
@@ -29,7 +29,8 @@
                 </el-aside>
 
                 <!-- 移动端抽屉显示侧边栏 -->
-                <el-drawer v-model="drawerVisible" direction="ltr" size="220px" :with-header="false">
+                <el-drawer :style="drawerStyle" custom-class="layout-aside" v-model="drawerVisible" direction="ltr"
+                    size="220px" :with-header="true">
                     <Sidebar />
                 </el-drawer>
 
@@ -51,7 +52,15 @@ import { computed, watch, ref, onMounted } from 'vue'
 const app = useAppStore()
 const { t, locale } = useI18n({ useScope: 'global' })
 
-
+const drawerStyle = computed(() => {
+    return {
+        background: app.darkMode
+            ? 'linear-gradient(135deg, #0C2B30, #112234, #131930)'
+            : 'linear-gradient(135deg, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%)',
+        color: app.darkMode ? '#e0e0e0' : '#2b2f3a',
+        padding: '0' // 清除默认内边距
+    }
+})
 // 响应式判断窗口宽度是否为移动端
 const drawerVisible = ref(false)
 const windowWidth = ref(window.innerWidth)
@@ -67,46 +76,6 @@ watch(() => app.locale, (newLocale) => {
     locale.value = newLocale
 }, { immediate: true })
 
-const toggleLocale = () => {
-    app.toggleLocale()
-}
-
-const toggleTheme = (e?: MouseEvent) => {
-    const isDark = !app.darkMode
-    const color = isDark ? '#000' : '#fff'
-
-    const ripple = document.createElement('div')
-    ripple.className = 'theme-ripple-mask'
-    ripple.style.setProperty('--ripple-color', color)
-
-    const x = (e?.clientX ?? window.innerWidth / 2) - 150
-    const y = (e?.clientY ?? window.innerHeight / 2) - 150
-    ripple.style.left = `${x}px`
-    ripple.style.top = `${y}px`
-    ripple.style.width = ripple.style.height = '300px'
-
-    document.body.appendChild(ripple)
-
-    // 强制重绘 + 开始动画
-    requestAnimationFrame(() => {
-        ripple.style.transform = 'scale(4)'
-        ripple.style.opacity = '0'
-    })
-
-    setTimeout(() => {
-        ripple.remove()
-    }, 500)
-
-    app.toggleTheme()
-}
-
-const localeLabel = computed(() =>
-    app.locale === 'zh' ? t('common.zh') : t('common.en')
-)
-
-const themeLabel = computed(() =>
-    app.darkMode ? '🌙 ' + t('common.dark') : '☀️ ' + t('common.light')
-)
 </script>
 
 <style scoped>
@@ -122,7 +91,6 @@ const themeLabel = computed(() =>
     padding: 0 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     background-color: var(--el-bg-color-overlay);
-    border-radius: 5px;
     box-sizing: border-box;
 }
 
@@ -141,18 +109,30 @@ const themeLabel = computed(() =>
 }
 
 .layout-aside {
-    background-color: var(--el-bg-color-overlay);
+    background: linear-gradient(135deg, #0C2B30, #112234, #131930);
     padding: 10px;
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.06);
     border-radius: 5px;
 }
 
-html:not(.dark) .layout-aside {
-    background: linear-gradient(to right, #E3FBFE 0%, #f2f6fb 100%);
+html:not(.dark) .layout-header {
+    background-image: linear-gradient(135deg, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
 }
 
+html:not(.dark) .layout-aside {
+    /*background: linear-gradient(to right, #E3FBFE 0%, #f2f6fb 100%);*/
+    background-image: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+:deep(.el-drawer__header) {
+    margin-bottom: 0;
+}
+:deep(.el-drawer__body){
+    padding: 0;
+}
 .layout-main {
     padding: 20px;
+    padding-top: 0;
     overflow-y: auto;
 }
 

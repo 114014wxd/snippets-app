@@ -34,7 +34,7 @@
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-const { t, }:any = useI18n({ useScope: 'global' })
+const { t, }: any = useI18n({ useScope: 'global' })
 const route = useRoute()
 const activeMenu = ref(route.path)
 // 监听路由变化保持高亮
@@ -48,7 +48,6 @@ watch(() => route.path, (newPath) => {
 .sidebar-menu {
     border-right: none;
     height: 100%;
-    padding-top: 10px;
 }
 
 /* 普通菜单项 */
@@ -60,18 +59,13 @@ watch(() => route.path, (newPath) => {
 
 /* hover 效果（淡蓝或淡灰） */
 html.dark .sidebar-menu :deep(.el-menu-item:hover) {
-    background: linear-gradient(135deg,
-            rgba(64, 158, 255, 0.2),
-            rgba(100, 108, 255, 0.25));
+    background-image: linear-gradient(-20deg, #2b5876 0%, #4e4376 100%);
     /* 淡蓝色 */
 }
 
-
 /* 选中菜单项样式 */
 html.dark .sidebar-menu :deep(.el-menu-item.is-active) {
-    background: linear-gradient(135deg,
-            rgba(64, 158, 255, 0.2),
-            rgba(100, 108, 255, 0.25));
+    background-image: linear-gradient(-20deg, #2b5876 0%, #4e4376 100%);
     /* 暗蓝 */
     color: #ffffff;
 }
@@ -92,9 +86,10 @@ html:not(.dark) .sidebar-menu :deep(.el-menu-item:hover) {
 
 /* active 样式 */
 html:not(.dark) .sidebar-menu :deep(.el-menu-item.is-active) {
-    background: linear-gradient(135deg,
-            rgba(64, 158, 255, 0.15),
-            rgba(200, 220, 255, 0.25));
+    background: radial-gradient(circle,
+            rgba(64, 158, 255, 0.05) 0%,
+            rgba(64, 158, 255, 0.15) 70%,
+            rgba(64, 158, 255, 0.25) 100%);
     color: #2b2f3a;
     border-radius: 8px;
 }

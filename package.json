@@ -12,6 +12,7 @@
   "dependencies": {
     "@capacitor/android": "^7.2.0",
     "@element-plus/icons-vue": "^2.3.1",
+    "appwrite": "^18.1.0",
     "element-plus": "^2.9.10",
     "pinia": "^3.0.2",
     "pinia-plugin-persistedstate": "^4.3.0",

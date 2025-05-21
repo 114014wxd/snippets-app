@@ -3,18 +3,22 @@ html.dark {
   --el-bg-color-overlay: #252629;
   --el-text-color-primary: #e0e0e0;
   --el-border-color: #3a3a3a;
+    /* ✅ 输入框变量 */
+  --input-bg-color: #1a1d24;
+  --input-text-color: #e0e0e0;
+  --input-placeholder-color: #888;
+  --input-border-color: rgb(255, 255, 255);
+  --input-border-focus-color: rgba(255, 255, 255, 0.8);
 }
-
-.theme-ripple-mask {
-  position: fixed;
-  border-radius: 50%;
-  background-color: var(--ripple-color, #fff);
-  transform: scale(0);
-  opacity: 1;
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.5s ease, opacity 0.3s ease;
+/* 默认浅色模式 */
+:root {
+  --input-border-color: #524b4b;
+  --input-text-color: #000000;
+  --input-border-focus-color:rgba(141, 128, 128, 0.8);
 }
 * {
   margin: 0;
 }
+
+
+

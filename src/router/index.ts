@@ -4,7 +4,8 @@ import Home from '@/views/Home/Home.vue'
 import ReactView from '@/views/Snippet/React.vue'
 import ArrayView from '@/views/Snippet/Array.vue'
 import InterviewView from '@/views/Snippet/Interview.vue'
-import NewSnippet from '@/views/Snippet/New.vue'
+import NewSnippet from '@/views/Snippet/settings/New.vue'
+import Register from '@/views/Register/Register.vue'
 
 const routes = [
   {
@@ -16,12 +17,21 @@ const routes = [
     name: 'Login',
     meta: {
       layout: false // ✅ 不使用 MainLayout
-    }, component: Login
+    },
+    component: Login
   },
   {
     path: '/home',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/register',
+    name: 'register',
+    meta: {
+      layout: false // ✅ 不使用 MainLayout
+    },
+    component: Register
   },
   {
     path: '/react',
@@ -51,15 +61,19 @@ const router = createRouter({
 })
 
 // 路由守卫
-// router.beforeEach((to, _from, next) => {
-//   const token = localStorage.getItem('user-token')
-//   if (to.path !== '/login' && !token) {
-//     next('/login')
-//   } else if (to.path === '/login' && token) {
-//     next('/dashboard')
-//   } else {
-//     next()
-//   }
-// })
+const publicPages = ['/login', '/register']
+
+router.beforeEach((to, _from, next) => {
+  const token = localStorage.getItem('user-token')
+  if (!publicPages.includes(to.path) && !token) {
+    // 未登录访问受保护页面
+    next('/login')
+  } else if (to.path === '/login' && token) {
+    // 已登录访问 login，重定向到首页
+    next('/dashboard')
+  } else {
+    next()
+  }
+})
 
 export default router
