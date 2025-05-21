@@ -70,7 +70,7 @@ async function onLogin() {
             }
 
             ElMessage.success(t('login.loginSuccess'))
-            router.push('/dashboard')
+            router.push('/home')
         } catch (error: any) {
             ElMessage.error(error?.message || '登录失败')
         }

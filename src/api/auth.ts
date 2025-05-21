@@ -5,7 +5,7 @@ import { account } from '@/libs/appwrite'
  * 登录（创建邮箱会话）
  */
 export async function login(email: string, password: string) {
-  return await account.createSession(email, password)
+  return await account.createEmailPasswordSession(email, password)
 }
 
 /**
