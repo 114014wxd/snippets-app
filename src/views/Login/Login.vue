@@ -28,9 +28,11 @@ import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAppStore } from '@/stores/app'
-import { login } from '@/api/auth'
+import { useUserStore } from '@/stores/user'
+import { login,getUser } from '@/api/auth'
 
 const app = useAppStore()
+const userStore = useUserStore()
 const { t } = useI18n({ useScope: 'global' })
 const router = useRouter()
 const loginForm = ref()
@@ -52,14 +54,26 @@ const rules = {
     ]
 }
 
-function onLogin() {
-    loginForm.value.validate((valid: boolean) => {
+async function onLogin() {
+    loginForm.value.validate(async (valid: boolean) => {
         if (!valid) return
-        if (form.value.remember) {
-            localStorage.setItem('user-token', 'token123')
+        try {
+            await login(form.value.email, form.value.password)
+
+            // 登录成功，获取用户信息
+            const userInfo = await getUser()
+            userStore.setUser(userInfo)
+
+            // 是否记住登录
+            if (form.value.remember) {
+                localStorage.setItem('user-token', 'valid')
+            }
+
+            ElMessage.success(t('login.loginSuccess'))
+            router.push('/dashboard')
+        } catch (error: any) {
+            ElMessage.error(error?.message || '登录失败')
         }
-        ElMessage.success(t('login.loginSuccess'))
-        router.push('/home')
     })
 }
 
@@ -82,7 +96,7 @@ function onLogin() {
 }
 
 .light-mode {
-   background-image: linear-gradient(to left, #fff1eb 0%, #ace0f9 100%);
+    background-image: linear-gradient(to left, #fff1eb 0%, #ace0f9 100%);
 }
 
 .login-card {
@@ -129,15 +143,18 @@ function onLogin() {
     display: flex;
     justify-content: space-between;
 }
-:deep( .el-form-item.is-error .el-input__wrapper){
-    box-shadow:0 0 0 1px #fdb6b6 inset;
+
+:deep(.el-form-item.is-error .el-input__wrapper) {
+    box-shadow: 0 0 0 1px #fdb6b6 inset;
 }
-:deep(.el-input__wrapper.is-focus){
-     box-shadow:0 0 1px var(--input-border-focus-color);
+
+:deep(.el-input__wrapper.is-focus) {
+    box-shadow: 0 0 1px var(--input-border-focus-color);
 }
+
 :deep(.el-input__wrapper) {
     background: transparent;
-    box-shadow:0 0 1px var(--input-border-color);
+    box-shadow: 0 0 1px var(--input-border-color);
 }
 
 @media (max-width: 600px) {
