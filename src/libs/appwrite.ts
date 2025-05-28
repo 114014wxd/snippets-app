@@ -2,14 +2,15 @@ import { Client, Account } from 'appwrite'
 
 const client = new Client()
 
-const endpoint = import.meta.env.VITE_APPWRITE_ENDPOINT
-const fullEndpoint = endpoint.startsWith('/')
-  ? `${window.location.origin}${endpoint}` // ✅ 拼接完整地址
-  : endpoint
+// 自动拼接完整 endpoint
+const rawEndpoint = import.meta.env.VITE_APPWRITE_ENDPOINT
+const fullEndpoint = rawEndpoint.startsWith('/')
+  ? `${window.location.origin}${rawEndpoint}`
+  : rawEndpoint
 
-client
-  .setEndpoint(fullEndpoint)
-  .setProject(import.meta.env.VITE_APPWRITE_PROJECT_ID)
+// ✅ 自定义 fetch，强制带上 Cookie
+client.setEndpoint(fullEndpoint)
+      .setProject(import.meta.env.VITE_APPWRITE_PROJECT_ID)
 
 const account = new Account(client)
 
