@@ -29,7 +29,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useAppStore } from '@/stores/app'
 import { useUserStore } from '@/stores/user'
-import { login,getUser,logout } from '@/api/auth'
+import { login,getUser } from '@/api/auth'
 
 const app = useAppStore()
 const userStore = useUserStore()
