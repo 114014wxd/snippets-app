@@ -1,4 +1,5 @@
 [[redirects]]
-  from = "/api/appwrite/*"
-  to = "/.netlify/functions/appwriteProxy"
-  status = 200
+from = "/api/appwrite/*"
+to = "/.netlify/functions/appwriteProxy"
+status = 200
+force = true
