@@ -1,5 +1,4 @@
-const fetch = require('node-fetch')
-
+// ✅ 不要 require('node-fetch')，直接使用原生 fetch
 exports.handler = async function (event) {
   const path = event.path.replace('/.netlify/functions/proxy', '')
   const url = `https://fra.cloud.appwrite.io/v1${path}`
