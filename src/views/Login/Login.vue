@@ -58,7 +58,7 @@ async function onLogin() {
     loginForm.value.validate(async (valid: boolean) => {
         if (!valid) return
         try {
-           await logout()
+        //    await logout()
             await login(form.value.email, form.value.password)
 
             // 登录成功，获取用户信息
