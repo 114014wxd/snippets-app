@@ -10,7 +10,6 @@
     "deploy": "vite build && gh-pages -d dist"
   },
   "dependencies": {
-    "@capacitor/android": "^7.2.0",
     "@element-plus/icons-vue": "^2.3.1",
     "@netlify/functions": "^3.1.10",
     "appwrite": "^18.1.0",
@@ -23,8 +22,6 @@
     "vue-router": "4"
   },
   "devDependencies": {
-    "@capacitor/cli": "^7.2.0",
-    "@capacitor/core": "^7.2.0",
     "@types/node": "^22.15.23",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/tsconfig": "^0.7.0",
