@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/api/appwrite/*"
+  to = "/.netlify/functions/appwriteProxy"
+  status = 200

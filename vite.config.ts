@@ -26,5 +26,17 @@ export default defineConfig({
     host: '0.0.0.0',
     cors: true,
     port: 5180, // 👈 改成不一样的端口，例如 5180
+    proxy: {
+      '/api/appwrite': {
+        target: 'https://fra.cloud.appwrite.io/v1',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api\/appwrite/, ''),
+        configure: proxy => {
+          proxy.on('proxyReq', (proxyReq) => {
+            proxyReq.setHeader('x-appwrite-project', '682c581700264fb8629d')
+          })
+        }
+      }
+    }
   },
 })
