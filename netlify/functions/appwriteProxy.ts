@@ -5,27 +5,37 @@ import fetch from 'node-fetch'
 const handler: Handler = async (event) => {
   const { httpMethod, body, headers, rawUrl } = event
 
-  // 你要代理的路径，前端请求如 /api/appwrite/account
+  // 路径重写
   const path = rawUrl.split('/api/appwrite')[1] || '/'
   const url = `https://fra.cloud.appwrite.io/v1${path}`
 
+  // 构造新的请求头（只保留关键字段）
+  const filteredHeaders: Record<string, string> = {
+    'x-appwrite-project': process.env.VITE_APPWRITE_PROJECT_ID || '',
+    'content-type': headers['content-type'] || 'application/json',
+  }
+
+  if (headers['authorization']) {
+    filteredHeaders['authorization'] = headers['authorization']
+  }
+  if (headers['cookie']) {
+    filteredHeaders['cookie'] = headers['cookie']
+  }
+
+  // 构造请求
   const response = await fetch(url, {
     method: httpMethod,
-    headers: {
-      ...headers,
-      host: 'fra.cloud.appwrite.io',
-      'x-appwrite-project': process.env.VITE_APPWRITE_PROJECT_ID || '',
-    },
-    body: httpMethod !== 'GET' && body ? body : undefined,
+    headers: filteredHeaders,
+    body: httpMethod !== 'GET' && body ? Buffer.from(body) : undefined,
   })
 
-  const data = await response.text()
+  const resBody = await response.text()
 
   return {
     statusCode: response.status,
-    body: data,
+    body: resBody,
     headers: {
-      'Content-Type': response.headers.get('content-type') || 'application/json'
+      'content-type': response.headers.get('content-type') || 'application/json',
     },
   }
 }
