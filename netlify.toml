@@ -2,8 +2,15 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+# ✅ 高优先级处理中转函数（API）
 [[redirects]]
   from = "/api/appwrite/*"
   to = "/.netlify/functions/appwriteProxy"
   status = 200
   force = true
+
+# ✅ 最后兜底交给前端路由
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
