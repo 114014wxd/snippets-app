@@ -1,6 +1,6 @@
 // src/stores/app.ts
 import { defineStore } from 'pinia'
-import piniaPersistConfig from './piniaPersist'
+import piniaPersistConfig from '../piniaPersist'
 
 export const useAppStore = defineStore('app', {
   state: () => ({

@@ -4,8 +4,9 @@ import Home from '@/views/Home/Home.vue'
 import ReactView from '@/views/Snippet/React.vue'
 import ArrayView from '@/views/Snippet/Array.vue'
 import InterviewView from '@/views/Snippet/Interview.vue'
-import NewSnippet from '@/views/Snippet/settings/New.vue'
+import Settings from '@/views/Snippet/settings/Settings.vue'
 import Register from '@/views/Register/Register.vue'
+import VueView from '@/views/Snippet/VueView/VueView.vue'
 
 const routes = [
   {
@@ -34,6 +35,11 @@ const routes = [
     component: Register
   },
   {
+    path: '/category/vue',
+    name: 'VueView',
+    component: VueView
+  },
+  {
     path: '/react',
     name: 'React',
     component: ReactView
@@ -50,8 +56,8 @@ const routes = [
   },
   {
     path: '/settings',
-    name: 'NewSnippet',
-    component: NewSnippet
+    name: 'Settings',
+    component: Settings
   }
 ]
 
@@ -64,11 +70,12 @@ const router = createRouter({
 const publicPages = ['/login', '/register']
 
 router.beforeEach((to, _from, next) => {
-  const token = localStorage.getItem('user-token')
-  if (!publicPages.includes(to.path) && !token) {
+  const UserInfoStr = localStorage.getItem('UserStore')
+  const UserInfo = UserInfoStr ? JSON.parse(UserInfoStr) : null
+  if (!publicPages.includes(to.path) && !(UserInfo && UserInfo.status)) {
     // 未登录访问受保护页面
     next('/login')
-  } else if (to.path === '/login' && token) {
+  } else if (to.path === '/login' && UserInfo && UserInfo.status) {
     // 已登录访问 login，重定向到首页
     next('/dashboard')
   } else {

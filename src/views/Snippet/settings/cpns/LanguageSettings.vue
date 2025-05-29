@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useAppStore } from '@/stores/app'
+import { useAppStore } from '@/stores/modules/app'
 
 const { locale, t } = useI18n({ useScope: 'global' })
 const app = useAppStore()

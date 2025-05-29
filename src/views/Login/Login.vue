@@ -27,9 +27,9 @@ import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useAppStore } from '@/stores/app'
-import { useUserStore } from '@/stores/user'
-import { login,getUser } from '@/api/auth'
+import { useAppStore } from '@/stores/modules/app'
+import { useUserStore } from '@/stores/modules/user'
+import { login, getUser } from '@/api/auth'
 
 const app = useAppStore()
 const userStore = useUserStore()
@@ -58,7 +58,7 @@ async function onLogin() {
     loginForm.value.validate(async (valid: boolean) => {
         if (!valid) return
         try {
-        //    await logout()
+            //    await logout()
             await login(form.value.email, form.value.password)
 
             // 登录成功，获取用户信息

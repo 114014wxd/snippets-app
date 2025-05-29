@@ -1,30 +1,30 @@
 // src/api/auth.ts
 import { account } from '@/libs/appwrite'
-
+import { withLoading } from '@/utils/withLoading'
 /**
  * 登录（创建邮箱会话）
  */
 export async function login(email: string, password: string) {
-  return await account.createEmailPasswordSession(email, password)
+  return await  withLoading(() => account.createEmailPasswordSession(email, password))
 }
 
 /**
  * 注册
  */
 export async function register(email: string, password: string, ) {
-  return await account.create('unique()', email, password)
+  return await withLoading(() => account.create('unique()', email, password))
 }
 
 /**
  * 获取当前用户信息
  */
 export async function getUser() {
-  return await account.get()
+  return await withLoading(() =>account.get())
 }
 
 /**
  * 登出
  */
 export async function logout() {
-  return await account.deleteSession('current')
+  return await withLoading(() => account.deleteSession('current'))
 }

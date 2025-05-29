@@ -1,6 +1,6 @@
 // src/stores/user.ts
 import { defineStore } from 'pinia'
-import piniaPersistConfig from './piniaPersist'
+import piniaPersistConfig from '../piniaPersist'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -15,12 +15,13 @@ export const useUserStore = defineStore('user', {
       this.id = user.$id
       this.email = user.email
       this.name = user.name
-      this.status = user.status
+      this.status = user.status || '/avatar-default.png'
     },
     clearUser() {
       this.id = ''
       this.email = ''
       this.name = ''
+      this.avatar = '/avatar-default.png' 
       this.status = false
     }
   },

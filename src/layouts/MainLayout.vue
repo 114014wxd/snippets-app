@@ -24,13 +24,19 @@
             <!-- 主体区域 -->
             <el-container style="height: calc(100vh - 60px); padding: 10px; box-sizing: border-box;">
                 <!-- 桌面端显示侧边栏 -->
-                <el-aside width="220px" class="layout-aside" v-if="!isMobile">
-                    <Sidebar />
+                <el-aside :width="isCollapsed ? '75px' : '200px'" class="layout-aside transition-aside"
+                    v-if="!isMobile">
+                    <div class="aside-inner">
+                        <div class="collapse-toggle" @click="toggleCollapse">
+                            {{ isCollapsed ? '👉' : '👈' }}
+                        </div>
+                        <Sidebar />
+                    </div>
                 </el-aside>
 
                 <!-- 移动端抽屉显示侧边栏 -->
                 <el-drawer :style="drawerStyle" custom-class="layout-aside" v-model="drawerVisible" direction="ltr"
-                    size="220px" :with-header="true">
+                    size="200px" :with-header="true">
                     <Sidebar />
                 </el-drawer>
 
@@ -44,14 +50,16 @@
 </template>
 
 <script setup lang="ts">
-import { useAppStore } from '@/stores/app'
+import { useAppStore } from '@/stores/modules/app'
 import { useI18n } from 'vue-i18n'
 import Sidebar from '@/components/Sidebar.vue'
-import { computed, watch, ref, onMounted } from 'vue'
+import { computed, provide, watch, ref, onMounted } from 'vue'
+import { useSidebarStore } from '@/stores/modules/sidebar'
 
+const sidebarStore = useSidebarStore()
 const app = useAppStore()
 const { t, locale } = useI18n({ useScope: 'global' })
-
+const router = useRouter()
 const drawerStyle = computed(() => {
     return {
         background: app.darkMode
@@ -61,6 +69,11 @@ const drawerStyle = computed(() => {
         padding: '0' // 清除默认内边距
     }
 })
+const isCollapsed = computed(() => sidebarStore.collapsed)
+const toggleCollapse = () => sidebarStore.toggle()
+
+// 提供给 Sidebar 使用
+provide('sidebarCollapsed', isCollapsed)
 // 响应式判断窗口宽度是否为移动端
 const drawerVisible = ref(false)
 const windowWidth = ref(window.innerWidth)
@@ -69,6 +82,13 @@ const isMobile = computed(() => windowWidth.value < 768)
 onMounted(() => {
     window.addEventListener('resize', () => {
         windowWidth.value = window.innerWidth
+    })
+
+    // ✅ 路由跳转后关闭 drawer（仅移动端）
+    router.afterEach(() => {
+        if (isMobile.value) {
+            drawerVisible.value = false
+        }
     })
 })
 
@@ -82,6 +102,27 @@ watch(() => app.locale, (newLocale) => {
 .layout-wrapper {
     background-color: var(--el-bg-color);
     color: var(--el-text-color-primary);
+}
+
+.transition-aside {
+    transition: width 0.3s ease;
+}
+
+.aside-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+}
+
+.collapse-toggle {
+    cursor: pointer;
+    font-size: 20px;
+    text-align: right;
+    padding: 5px 10px;
+    user-select: none;
+    color: #ccc;
 }
 
 .layout-header {
@@ -113,6 +154,7 @@ watch(() => app.locale, (newLocale) => {
     padding: 10px;
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.06);
     border-radius: 5px;
+    box-sizing: border-box;
 }
 
 html:not(.dark) .layout-header {
@@ -127,9 +169,13 @@ html:not(.dark) .layout-aside {
 :deep(.el-drawer__header) {
     margin-bottom: 0;
 }
-:deep(.el-drawer__body){
+
+:deep(.el-drawer__body) {
     padding: 0;
+    display: flex;
+    justify-content: center;
 }
+
 .layout-main {
     padding: 20px;
     padding-top: 0;

@@ -1,5 +1,5 @@
 // src/libs/appwrite.ts
-import { Client, Account } from 'appwrite'
+import {ID, Client, Account,Storage  } from 'appwrite'
 // ✅ 必须放在 SDK 初始化之前
 const rawFetch = window.fetch
 
@@ -16,5 +16,5 @@ client
   .setProject(import.meta.env.VITE_APPWRITE_PROJECT_ID)
 
 const account = new Account(client)
-
-export { account }
+const storage = new Storage(client) 
+export { ID,account,storage }
