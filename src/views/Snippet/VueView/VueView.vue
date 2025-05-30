@@ -1,19 +1,28 @@
 <template>
-    <div class="snippet-list">
-        <div class="header-bar">
-            <!-- <el-button type="primary" @click="showEditor = true">
-                添加代码
-            </el-button> -->
-            <button class="beach-button" @click="showEditor = true">添加代码 🌴</button>
-        </div>
-
-        <SnippetEditor v-model:visible="showEditor" @save="addSnippet" :modelValue="editData" />
-
-        <div class="cards-wrapper">
-            <SnippetCard v-for="item in sortedSnippets" :key="item.id" :snippet="item" @delete="removeSnippet"
-                @edit="editSnippet" @copy="copySnippet" @pin="pinSnippet" />
-        </div>
+  <div class="snippet-list">
+    <div class="header-bar">
+      <button class="beach-button" @click="showEditor = true">添加代码 🌴</button>
     </div>
+
+    <SnippetEditor
+      v-model:visible="showEditor"
+      @save="addSnippet"
+      :modelValue="editData"
+      :isEdit="!!(editData && editData.id)"
+    />
+
+    <div class="cards-wrapper">
+      <SnippetCard
+        v-for="item in sortedSnippets"
+        :key="item.id"
+        :snippet="item"
+        @delete="removeSnippet"
+        @edit="editSnippet"
+        @copy="copySnippet"
+        @pin="pinSnippet"
+      />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -22,49 +31,53 @@ import SnippetCard from './cpns/SnippetCard.vue'
 import SnippetEditor from './cpns/SnippetEditor.vue'
 import { ElMessage } from 'element-plus'
 
+interface Snippet {
+  id: number
+  title: string
+  content: string
+  tags?: string[]
+  icon?: string
+  pinned: boolean
+}
+
 const showEditor = ref(false)
-const editData = ref(null)
-const snippets = ref<any[]>([])
+const editData = ref<Partial<Snippet> | null>(null)
+const snippets = ref<Snippet[]>([])
 
 const sortedSnippets = computed(() => {
-    return snippets.value.slice().sort((a, b) => Number(b.pinned) - Number(a.pinned))
+  return snippets.value.slice().sort((a, b) => Number(b.pinned) - Number(a.pinned))
 })
 
-const addSnippet = (snippet) => {
-    // console.log('收到片段数据：', snippet)
-    // if (snippet.id) {
-    //     const index = snippets.value.findIndex(s => s.id === snippet.id)
-    //     if (index !== -1) snippets.value[index] = snippet
-    // } else {
-    snippets.value.push({
-        ...snippet,
-        id: Date.now(),
-        pinned: false
-    })
-    // }
-    // console.log('当前片段列表：', snippets.value);
+const addSnippet = (snippet: Partial<Snippet>) => {
+  snippets.value.push({
+    ...snippet,
+    id: Date.now(),
+    pinned: false,
+    title: snippet.title || '',
+    content: snippet.content || ''
+  } as Snippet)
 
-    showEditor.value = false
-    editData.value = {}
+  showEditor.value = false
+  editData.value = null
 }
 
-const removeSnippet = (id) => {
-    snippets.value = snippets.value.filter(i => i.id !== id)
-    ElMessage.success('已删除')
+const removeSnippet = (id: number) => {
+  snippets.value = snippets.value.filter(i => i.id !== id)
+  ElMessage.success('已删除')
 }
 
-const editSnippet = (snippet) => {
-    editData.value = { ...snippet }
-    showEditor.value = true
+const editSnippet = (snippet: Snippet) => {
+  editData.value = { ...snippet }
+  showEditor.value = true
 }
 
-const copySnippet = async (content) => {
-    await navigator.clipboard.writeText(content)
-    ElMessage.success('已复制')
+const copySnippet = async (content: string) => {
+  await navigator.clipboard.writeText(content)
+  ElMessage.success('已复制')
 }
 
-const pinSnippet = (snippet) => {
-    snippet.pinned = !snippet.pinned
+const pinSnippet = (snippet: Snippet) => {
+  snippet.pinned = !snippet.pinned
 }
 </script>
 

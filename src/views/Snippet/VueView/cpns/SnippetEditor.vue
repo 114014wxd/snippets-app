@@ -40,14 +40,14 @@
 import { ref, watch } from 'vue'
 import { extractTags, getRandomIcon } from '@/utils/snippetHelper'
 
-const props = defineProps({
-    visible: Boolean,
-    modelValue: Object,
-    isEdit: Boolean
-})
+const props = defineProps<{
+    visible: boolean,
+    modelValue: any,
+    isEdit: boolean
+}>()
 const emit = defineEmits(['cancel', 'save', 'update:visible'])
 
-const form = ref({ id: '', title: '', content: '', tags: [], icon: '', pinned: false })
+const form = ref<{ id: string; title: string; content: string; tags: string[]; icon: string; pinned: boolean }>({ id: '', title: '', content: '', tags: [], icon: '', pinned: false })
 
 watch(
     () => props.modelValue,
@@ -65,7 +65,7 @@ const onSave = () => {
     if (!form.value.title.trim() || !form.value.content.trim()) return
     form.value.tags = extractTags(form.value.content)
     form.value.icon = form.value.icon || getRandomIcon()
-    form.value.id = form.value.id || Date.now()
+    form.value.id = form.value.id || Date.now().toString()
     emit('save', { ...form.value })
     emit('update:visible', false)
 }
