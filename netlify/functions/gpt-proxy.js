@@ -1,34 +1,35 @@
-export async function handler(event) {
-  if (event.httpMethod === 'OPTIONS') {
+// netlify/functions/gpt-proxy.ts
+import { Handler } from '@netlify/functions'
+import OpenAI from 'openai'
+
+const openai = new OpenAI({
+  baseURL: 'https://api.deepseek.com',
+  apiKey: process.env.DEEPSEEK_API_KEY
+})
+
+const handler = async (event) => {
+  try {
+    const body = JSON.parse(event.body || '{}')
+    const { messages } = body
+
+    const completion = await openai.chat.completions.create({
+      model: 'deepseek-chat',
+      messages
+    })
+
     return {
       statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-      },
-      body: ''
+      body: JSON.stringify(completion)
+    }
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: '请求失败',
+        detail: err.message
+      })
     }
   }
-
-  const body = JSON.parse(event.body || '{}')
-
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  })
-
-  const data = await response.json()
-
-  return {
-    statusCode: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    },
-    body: JSON.stringify(data)
-  }
 }
+
+export { handler }

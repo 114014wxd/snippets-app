@@ -1,22 +1,32 @@
 <template>
-    <div class="chat-wrapper">
-        <div class="chat-window">
-            <div v-for="(msg, index) in messages" :key="index" :class="['chat-message', msg.role]">
-                <div class="bubble">
-                    <span v-if="msg.role === 'user'">🧑‍💻</span>
-                    <span v-else>🤖</span>
-                    <span>{{ msg.content }}</span>
-                </div>
-            </div>
+  <div class="chat-wrapper">
+    <div class="chat-window">
+      <div
+        v-for="(msg, index) in messages"
+        :key="index"
+        :class="['chat-message', msg.role]"
+      >
+        <div class="bubble">
+          <span v-if="msg.role === 'user'">🧑‍💻</span>
+          <span v-else>🤖</span>
+          <span>{{ msg.content }}</span>
         </div>
-        <div class="chat-input">
-            <el-input v-model="input" type="textarea" :autosize="{ minRows: 1, maxRows: 4 }" placeholder="输入你的问题..."
-                @keydown.enter.prevent="handleSend" />
-            <el-button :loading="loading" type="primary" icon="ChatLineRound" @click="handleSend">
-                发送
-            </el-button>
-        </div>
+      </div>
     </div>
+    <div class="chat-cost" v-if="costInfo">{{ costInfo }}</div>
+    <div class="chat-input">
+      <el-input
+        v-model="input"
+        type="textarea"
+        :autosize="{ minRows: 1, maxRows: 4 }"
+        placeholder="输入你的问题..."
+        @keydown.enter.prevent="handleSend"
+      />
+      <el-button :loading="loading" type="primary"  @click="handleSend">
+        发送
+      </el-button>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -24,35 +34,43 @@ import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 
 const input = ref('')
-const messages = ref([
-    { role: 'system', content: '你是一个代码助手' },
-])
+const messages = ref([{ role: 'system', content: '你是一个代码助手' }])
+const costInfo = ref('')
 const loading = ref(false)
 
-// 根据环境切换 API 路径
-// 根据环境切换 API 路径
 const gptApiUrl = import.meta.env.DEV
-  ? 'https://snippets.website/.netlify/functions/gpt-proxy' // ✅ DEV 用线上部署测试
-  : '/.netlify/functions/gpt-proxy'                         // ✅ 生产环境使用相对路径
+  ? 'http://localhost:3001/gpt-proxy'
+  : '/.netlify/functions/gpt-proxy'
 
-// 💬 核心方法：发送消息
 async function handleSend() {
   const question = input.value.trim()
   if (!question) return
 
-  // 追加用户提问
   messages.value.push({ role: 'user', content: question })
   input.value = ''
   loading.value = true
 
   try {
-    const res = await chatWithGpt(messages.value)
-    const reply = res?.choices?.[0]?.message?.content?.trim()
+    const res = await fetch(gptApiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: [
+          { role: 'system', content: '你是一个代码助手' },
+          { role: 'user', content: question }
+        ]
+      })
+    })
 
-    if (reply) {
-      messages.value.push({ role: 'assistant', content: reply })
-    } else {
-      ElMessage.warning('GPT 没有返回有效内容')
+    const data = await res.json()
+    const reply = data?.choices?.[0]?.message?.content?.trim()
+    const usage = data?.usage
+
+    if (reply) messages.value.push({ role: 'assistant', content: reply })
+
+    if (usage) {
+      costInfo.value = `🧾 Token 用量：提示 ${usage.prompt_tokens} ，回复 ${usage.completion_tokens} ，总计 ${usage.total_tokens}`
     }
   } catch (err: any) {
     ElMessage.error('请求失败: ' + (err?.message || '未知错误'))
@@ -60,72 +78,70 @@ async function handleSend() {
     loading.value = false
   }
 }
-
-// 🔁 请求 GPT
-async function chatWithGpt(messages: any[]) {
-  const res = await fetch(gptApiUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      model: 'gpt-3.5-turbo',
-      messages
-    })
-  })
-
-  return await res.json()
-}
-
 </script>
 
 <style scoped>
+:root {
+  --bubble-user: #c1e9ff;
+  --bubble-assistant: #e2f0d9;
+}
+
+.dark {
+  --bubble-user: rgba(64, 158, 255, 0.2);
+  --bubble-assistant: rgba(103, 194, 58, 0.15);
+}
+
 .chat-wrapper {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    padding: 1rem;
-    box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 .chat-window {
-    flex: 1;
-    overflow-y: auto;
-    padding-bottom: 10px;
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 10px;
 }
 
 .chat-message {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .chat-message.user {
-    text-align: right;
+  text-align: right;
 }
 
 .chat-message.assistant {
-    text-align: left;
+  text-align: left;
 }
 
 .bubble {
-    display: inline-block;
-    padding: 10px;
-    border-radius: 8px;
-    background: #f1f1f1;
-    max-width: 80%;
+  display: inline-block;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--bubble-assistant);
+  max-width: 80%;
+  white-space: pre-wrap;
+  line-height: 1.6;
 }
 
 .chat-message.user .bubble {
-    background-color: #c1e9ff;
-}
-
-.chat-message.assistant .bubble {
-    background-color: #e2f0d9;
+  background-color: var(--bubble-user);
 }
 
 .chat-input {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.chat-cost {
+  font-size: 13px;
+  color: var(--el-text-color-secondary);
+  margin-top: 8px;
+  text-align: right;
 }
 </style>

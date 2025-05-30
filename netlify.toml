@@ -1,22 +1,27 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
+  external_node_modules = ["openai"]
 
-# ✅ 高优先级处理中转函数（API）
+[build.environment]
+  DEEPSEEK_API_KEY = "sk-4f0dafcaa4ba4669a859e21ffd798e66"
+  NODE_VERSION = "20"
+
+# ✅ 自定义 API 转发（如 Appwrite）
 [[redirects]]
   from = "/api/appwrite/*"
   to = "/.netlify/functions/appwriteProxy"
   status = 200
   force = true
 
-# ✅ 最后兜底交给前端路由
+# ✅ 函数请求自动转发支持（如 gpt-proxy）
+[[redirects]]
+  from = "/.netlify/functions/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# ✅ 所有静态页面交给前端路由处理
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  [build]
-  publish = "dist"
-  command = "npm run build"
-
-[functions]
-  directory = "netlify/functions"
