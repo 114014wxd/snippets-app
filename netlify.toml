@@ -4,7 +4,6 @@
   external_node_modules = ["openai"]
 
 [build.environment]
-  DEEPSEEK_API_KEY = "sk-4f0dafcaa4ba4669a859e21ffd798e66"
   NODE_VERSION = "20"
 
 # ✅ 自定义 API 转发（如 Appwrite）
