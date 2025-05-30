@@ -1,5 +1,4 @@
 // netlify/functions/gpt-proxy.ts
-import { Handler } from '@netlify/functions'
 import OpenAI from 'openai'
 
 const openai = new OpenAI({
