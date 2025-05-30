@@ -66,7 +66,7 @@ const onRegister = () => {
     try {
       await register(form.value.email, form.value.password)
       ElMessage.success(t('register.success'))
-      router.push('/dashboard')
+      router.push('/home')
     } catch (err: any) {
       ElMessage.error(err?.message || '注册失败')
     }

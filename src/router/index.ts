@@ -77,7 +77,7 @@ router.beforeEach((to, _from, next) => {
     next('/login')
   } else if (to.path === '/login' && UserInfo && UserInfo.status) {
     // 已登录访问 login，重定向到首页
-    next('/dashboard')
+    next('/home')
   } else {
     next()
   }

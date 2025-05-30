@@ -55,29 +55,43 @@ const rules = {
 }
 
 async function onLogin() {
-    loginForm.value.validate(async (valid: boolean) => {
-        if (!valid) return
-        try {
-            await logout()
-            await login(form.value.email, form.value.password)
+  loginForm.value.validate(async (valid: boolean) => {
+    if (!valid) return
 
-            // 登录成功，获取用户信息
-            const userInfo = await getUser()
-            userStore.setUser(userInfo)
+    try {
+      // ✅ 检查是否已登录（通过调用 getUser）
+      let alreadyLoggedIn = false
+      try {
+        await getUser()
+        alreadyLoggedIn = true
+      } catch (err) {
+        // 未登录时 getUser 会抛错，忽略即可
+      }
 
-            // 是否记住登录
-            if (form.value.remember) {
-                localStorage.setItem('user-token', 'valid')
-            }
+      // ✅ 如果已登录，先退出
+      if (alreadyLoggedIn) {
+        await logout()
+      }
 
-            ElMessage.success(t('login.loginSuccess'))
-            router.push('/home')
-        } catch (error: any) {
-            ElMessage.error(error?.message || '登录失败')
-        }
-    })
+      // ✅ 执行登录
+      await login(form.value.email, form.value.password)
+
+      // ✅ 登录成功后获取用户信息
+      const userInfo = await getUser()
+      userStore.setUser(userInfo)
+
+      // ✅ 是否记住登录
+      if (form.value.remember) {
+        localStorage.setItem('user-token', 'valid')
+      }
+
+      ElMessage.success(t('login.loginSuccess'))
+      router.push('/home')
+    } catch (error: any) {
+      ElMessage.error(error?.message || '登录失败')
+    }
+  })
 }
-
 
 </script>
 
